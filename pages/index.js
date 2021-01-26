@@ -1,11 +1,13 @@
-import styled from 'styled-components'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useRouter } from 'next/router';
+
 import db from '../db.json';
-import Widget from '../src/components/Widget'
-import QuizLogo from '../src/components/QuizLogo'
-import QuizBackground from '../src/components/QuizBackground'
-import Footer from '../src/components/Footer'
-import GitHubCorner from '../src/components/GitHubCorner'
-import Head from 'next/head'
+import Widget from '../src/components/Widget';
+import QuizLogo from '../src/components/QuizLogo';
+import QuizBackground from '../src/components/QuizBackground';
+import Footer from '../src/components/Footer';
+import GitHubCorner from '../src/components/GitHubCorner';
 
 // const BackgroundImage = styled.div`
 //   background-image: url(${db.bg});
@@ -28,26 +30,17 @@ export const QuizContainer = styled.div`
   }
 `;
 
+function onNameChange(event, router, name) {
+  router.push(`/quiz?name=${name}`);
+  event.preventDefault();
+}
+
 export default function Home() {
+  const router = useRouter();
+  const [name, setName] = React.useState('');
+
   return (
-      <QuizBackground backgroundImage={db.bg}>
-        <Head>
-          <title>Quiz de God of War</title>
-          <meta name="title" content={db.title}></meta>
-          <meta name="description" content={db.description}></meta>
-
-          <meta property="og:type" content="website"></meta>
-          <meta property="og:url" content={db.appURL}></meta>
-          <meta property="og:title" content={db.title}></meta>
-          <meta property="og:description" content={db.description}></meta>
-          <meta property="og:image" content={db.bg}></meta>
-
-          <meta property="twitter:card" content="summary_large_image"></meta>
-          <meta property="twitter:url" content={db.appURL}></meta>
-          <meta property="twitter:title" content={db.title}></meta>
-          <meta property="twitter:description" content={db.description}></meta>
-          <meta property="twitter:image" content={db.bg}></meta>
-        </Head>
+    <QuizBackground backgroundImage={db.bg}>
       <QuizContainer>
         <QuizLogo />
         <Widget>
@@ -56,6 +49,15 @@ export default function Home() {
           </Widget.Header>
           <Widget.Content>
             <p>{db.description}</p>
+          </Widget.Content>
+          <Widget.Content>
+            <form onSubmit={function (event) { onNameChange(event, router, name); }}>
+              <input onChange={function (event) { setName(event.target.value); }} placeholder="Digite o seu nome" />
+              <button type="submit" disabled={name.length === 0}>
+                Jogar como&nbsp;
+                {name}
+              </button>
+            </form>
           </Widget.Content>
         </Widget>
 
@@ -69,6 +71,6 @@ export default function Home() {
       </QuizContainer>
       <GitHubCorner projectUrl="https://github.com/jonathan-gomes/aluraquiz-base" />
     </QuizBackground>
-    
+
   );
 }
