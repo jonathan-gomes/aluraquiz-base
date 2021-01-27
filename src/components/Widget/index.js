@@ -34,12 +34,12 @@ Widget.Header = styled.header`
 `;
 
 Widget.Content = styled.div`
-  padding: 24px 32px 32px 32px;
+  padding: 24px 32px 0px 32px;
   & > *:first-child {
     margin-top: 0;
   }
   & > *:last-child {
-    margin-bottom: 0;
+    margin-bottom: 0px;
   }
   ul {
     list-style: none;
